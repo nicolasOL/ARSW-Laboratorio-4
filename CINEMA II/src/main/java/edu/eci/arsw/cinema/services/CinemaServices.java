@@ -78,7 +78,7 @@ public class CinemaServices {
         }
     }
     
-    public List<CinemaFunction> getFunctionsbyCinemaAndDate(String cinema, String date) {
+    public List<CinemaFunction> getFunctionsbyCinemaAndDate(String cinema, String date) throws CinemaPersistenceException {
         return cps.getFunctionsbyCinemaAndDate(cinema, date);
     }
     
@@ -99,6 +99,18 @@ public class CinemaServices {
             System.out.println(e.getMessage());
         }
         return m;
+    }
+    
+    public CinemaFunction getFunctionByCinemaDateMovieName(String cinema, String date, String name) throws CinemaPersistenceException {
+    	CinemaFunction res = null;
+    	ArrayList<CinemaFunction> cf = (ArrayList<CinemaFunction>) getFunctionsbyCinemaAndDate(cinema, date);
+    	for(CinemaFunction f: cf) {
+    		if(f.getMovie().getName().equals(name)) {
+    			res = f;
+    		}
+    	}
+    	if(res == null) throw new CinemaPersistenceException("Ningún función está asociada a la pelicula "+name);
+    	return res;
     }
 
 

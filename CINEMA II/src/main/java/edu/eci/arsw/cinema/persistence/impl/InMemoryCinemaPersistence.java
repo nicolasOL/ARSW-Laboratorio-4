@@ -11,6 +11,10 @@ import edu.eci.arsw.cinema.model.Movie;
 import edu.eci.arsw.cinema.persistence.CinemaException;
 import edu.eci.arsw.cinema.persistence.CinemaPersistenceException;
 import edu.eci.arsw.cinema.persistence.CinemaPersitence;
+
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.springframework.stereotype.Service;
+import edu.eci.arsw.cinema.model.Fecha;
 
 /**
  *
@@ -30,32 +35,32 @@ public class InMemoryCinemaPersistence implements CinemaPersitence {
 
 	public InMemoryCinemaPersistence() {
 		// load stub data
-                //Primer cinema
-		String functionDate = "2018-12-18 15:30";
+		// Primer cinema
+		String functionDate = "2018-09-03 05:30";
 		List<CinemaFunction> functions = new ArrayList<>();
 		CinemaFunction funct1 = new CinemaFunction(new Movie("SuperHeroes Movie", "Action"), functionDate);
 		CinemaFunction funct2 = new CinemaFunction(new Movie("The Night", "Horror"), functionDate);
 		functions.add(funct1);
 		functions.add(funct2);
 		Cinema c = new Cinema("cinemaX", functions);
-                cinemas.put("cinemaX", c);
-                
-                
-                //Segundo cinema
-                String functionDate2 = "2020-09-03 14:30";
+		cinemas.put("cinemaX", c);
+
+		// Segundo cinema
+		String functionDate2 = "2020-09-03 09:20";
 		List<CinemaFunction> functions2 = new ArrayList<>();
 		CinemaFunction funct3 = new CinemaFunction(new Movie("Avengers ENDGAME", "Ficcion"), functionDate2);
 		CinemaFunction funct4 = new CinemaFunction(new Movie("Saw 15", "Horror"), functionDate2);
 		functions2.add(funct3);
 		functions2.add(funct4);
 		Cinema c2 = new Cinema("cinemaSuba", functions2);
-                    
+
 		cinemas.put("cinemaSuba", c2);
 	}
 
 	@Override
 	public void buyTicket(int row, int col, String cinema, String date, String movieName) throws CinemaException {
-		if(!cinemas.containsKey(cinema)) throw new CinemaException("El cinema "+cinema+" no existe");
+		if (!cinemas.containsKey(cinema))
+			throw new CinemaException("El cinema " + cinema + " no existe");
 		Cinema c = cinemas.get(cinema);
 		List<CinemaFunction> f = c.getFunctions();
 		for (int i = 0; i < f.size(); i++) {
@@ -67,15 +72,22 @@ public class InMemoryCinemaPersistence implements CinemaPersitence {
 	}
 
 	@Override
-	public List<CinemaFunction> getFunctionsbyCinemaAndDate(String cinema, String date) {
+	public List<CinemaFunction> getFunctionsbyCinemaAndDate(String cinema, String date) throws CinemaPersistenceException {
+		boolean in = false;
 		List<CinemaFunction> cfR = new ArrayList<CinemaFunction>();
-		for (CinemaFunction cf : cinemas.get(cinema).getFunctions()) {
-			if (cf.getDate() == date) {
+        Cinema cinemaT = getCinema(cinema);
+		for (CinemaFunction cf : cinemaT.getFunctions()) {
+			String sinHora = cf.getDate().substring(0,10).trim();
+			if (cf.getDate().equals(date) || sinHora.equals(date)) {
+				in = true;
 				cfR.add(cf);
 			}
 		}
+		if(!in) throw new CinemaPersistenceException("La fecha no concuerda con ninguna función del cinema "+cinema);
 		return cfR;
 	}
+
+	
 
 	@Override
 	public void saveCinema(Cinema c) throws CinemaPersistenceException {
@@ -88,7 +100,8 @@ public class InMemoryCinemaPersistence implements CinemaPersitence {
 
 	@Override
 	public Cinema getCinema(String name) throws CinemaPersistenceException {
-                if(!cinemas.containsKey(name)) throw new CinemaPersistenceException("El cinema"+ name +"no está");
+		if (!cinemas.containsKey(name))
+			throw new CinemaPersistenceException("El cinema " + name + " no está");
 		return cinemas.get(name);
 	}
 
@@ -108,7 +121,8 @@ public class InMemoryCinemaPersistence implements CinemaPersitence {
 
 	@Override
 	public List<Movie> filterB(String cinema, String date, int emptySeats) throws CinemaPersistenceException {
-		if(!cinemas.containsKey(cinema)) throw new CinemaPersistenceException("El cinema "+cinema+" no existe");
+		if (!cinemas.containsKey(cinema))
+			throw new CinemaPersistenceException("El cinema " + cinema + " no existe");
 		ArrayList<Movie> result = new ArrayList<Movie>();
 		Set<Cinema> c = getAllCinemas();
 		Cinema ci = getCinema(cinema);
