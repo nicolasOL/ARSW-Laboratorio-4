@@ -1,0 +1,8 @@
+* Qué condiciones de carrera se podrían presentar?                                                     
+Se podría presentar el caso en el que dos peticiones quieran hacer una actualización de las funciones de un cinema en especial a través del método PUT. 
+* Cuales son las respectivas regiones críticas?                                                  
+La región critica identificada se encuentra en el metodo la componente Controller updateCinemaByName.
+
+Puesto que al momento de hacer las peticiones las ejecuciones de estas deben pasar por el método updateCinemaByName,
+presente el modulo de persistencia, y consultar el cinema en el HashMap, se decidió hacerlo ThreadSafe sustituyendolo
+por un ConcurrentHashMap.
