@@ -56,12 +56,7 @@ public ResponseEntity<?> manejadorGetRecursoCinema(){
 public ResponseEntity<?> getFunctions(@PathVariable String name) throws CinemaException{
     try {
     	String data = new GsonBuilder().setPrettyPrinting().create().toJson((ArrayList<CinemaFunction>) cinemaServices.getCinemaByName(name).getFunctions());
-    	//String data = new Gson().toJson((ArrayList<CinemaFunction>) cinemaServices.getCinemaByName(name).getFunctions());
-    	Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    	JsonParser jp = new JsonParser();
-    	JsonElement je = jp.parse(data);
-    	String p = gson.toJson(je);
-        return new ResponseEntity<>(p,HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(data,HttpStatus.ACCEPTED);
     } catch (CinemaPersistenceException ex) {
         Logger.getLogger(CinemaAPIController.class.getName()).log(Level.SEVERE, null, ex);
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
