@@ -108,4 +108,12 @@ public class AnotherCinemaPersistence implements CinemaPersitence {
 		throw new UnsupportedOperationException("No se tiene implementado el filtro B.");
 	}
 
+	@Override
+	public void addCinemaFunction(String cinema, String movie, String genero, String date) throws CinemaPersistenceException {
+		if (!cinemas.containsKey(cinema)) throw new CinemaPersistenceException("El cinema " + cinema + " no existe");
+		Cinema cinemaTemp = cinemas.get(cinema);
+		cinemaTemp.addCinemaFunction(new CinemaFunction(new Movie(movie, genero),date));
+		
+	}
+
 }

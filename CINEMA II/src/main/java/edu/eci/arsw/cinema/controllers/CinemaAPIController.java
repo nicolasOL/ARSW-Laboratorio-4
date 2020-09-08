@@ -18,14 +18,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
 
+import com.fasterxml.jackson.databind.ser.std.CollectionSerializer;
 import com.google.gson.*;
 import edu.eci.arsw.cinema.model.CinemaFunction;
 import edu.eci.arsw.cinema.model.Cinema;
 import edu.eci.arsw.cinema.persistence.CinemaException;
 import edu.eci.arsw.cinema.persistence.CinemaPersistenceException;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 /**
@@ -91,5 +96,19 @@ public ResponseEntity<?> getFunctionsbyCinemaDateandMoviename(@PathVariable Stri
 	
 	
 }
+
+@RequestMapping(value="/{name}", method = RequestMethod.POST)	
+public ResponseEntity<?> addCinemaFunction(@PathVariable String name, @RequestBody CinemaFunction cf){
+        try {
+			cinemaServices.addCinemaFunction(name, cf.getMovie().getName(), cf.getMovie().getGenre(), cf.getDate());
+		} catch (CinemaPersistenceException e) {
+			Logger.getLogger(CinemaAPIController.class.getName()).log(Level.SEVERE, null, e);
+	        return new ResponseEntity<>(e.getMessage(),HttpStatus.FORBIDDEN); 
+		}
+		return new ResponseEntity<>(HttpStatus.CREATED);
+
+
+}
+
 
 }

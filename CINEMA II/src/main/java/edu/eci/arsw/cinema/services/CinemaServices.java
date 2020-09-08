@@ -112,6 +112,11 @@ public class CinemaServices {
     	if(res == null) throw new CinemaPersistenceException("Ningún función está asociada a la pelicula "+name);
     	return res;
     }
+    
+    public void addCinemaFunction(String cinema, String movie, String genero, String date) throws CinemaPersistenceException {
+		cps.addCinemaFunction(cinema, movie, genero, date);
+		
+	}
 
 
 }
