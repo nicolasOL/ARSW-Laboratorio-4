@@ -117,6 +117,10 @@ public class CinemaServices {
 		cps.addCinemaFunction(cinema, movie, genero, date);
 		
 	}
+    
+    public void updateCinemaByName(String name, Cinema cinema) throws CinemaPersistenceException {
+    	cps.updateCinemaByName(name, cinema);
+    }
 
 
 }

@@ -1,1 +1,1 @@
-![](/CINEMA_II/img/VerificacionPuntoDos.PNG)
+![](CINEMA_II/img/VerificacionPuntoDos.PNG)

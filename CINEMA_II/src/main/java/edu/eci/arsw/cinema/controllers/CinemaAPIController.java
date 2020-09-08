@@ -111,6 +111,18 @@ public ResponseEntity<?> addCinemaFunction(@PathVariable String name, @RequestBo
 
 }
 
+@PutMapping("/{name}")
+public ResponseEntity<?> updateCinemaByName(@PathVariable String name, @RequestBody Cinema cinema){
+	try {
+		cinemaServices.updateCinemaByName(name, cinema);
+	} catch (CinemaPersistenceException e) {
+		Logger.getLogger(CinemaAPIController.class.getName()).log(Level.SEVERE, null, e);
+        return new ResponseEntity<>(e.getMessage(),HttpStatus.FORBIDDEN); 
+	}
+	return new ResponseEntity<>(HttpStatus.CREATED);
+}
+
+
 
 
 

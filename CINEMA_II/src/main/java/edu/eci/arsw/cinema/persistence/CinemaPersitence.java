@@ -64,4 +64,8 @@ public interface CinemaPersitence {
     public List<Movie> filterA(String cinema,String date,String gender) throws CinemaPersistenceException;
     
     public void addCinemaFunction(String cinema, String movie, String genero, String date) throws CinemaPersistenceException;
+    
+    public void updateCinemaByName(String name, Cinema cinema) throws CinemaPersistenceException;
+    
+    public void updateCinemaByNameAndDate(String name, String date, Cinema cinema) throws CinemaPersistenceException;
 }

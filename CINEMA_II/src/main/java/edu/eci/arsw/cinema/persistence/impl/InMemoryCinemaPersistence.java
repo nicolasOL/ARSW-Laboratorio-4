@@ -21,6 +21,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.stereotype.Service;
 import edu.eci.arsw.cinema.model.Fecha;
 
@@ -31,8 +33,10 @@ import edu.eci.arsw.cinema.model.Fecha;
 @Service
 public class InMemoryCinemaPersistence implements CinemaPersitence {
 
-	private final Map<String, Cinema> cinemas = new HashMap<>();
+	//private final Map<String, Cinema> cinemas = new HashMap<>();
 
+	private final ConcurrentHashMap<String, Cinema> cinemas = new ConcurrentHashMap<>();
+	
 	public InMemoryCinemaPersistence() {
 		// load stub data
 		// Primer cinema
@@ -142,5 +146,22 @@ public class InMemoryCinemaPersistence implements CinemaPersitence {
 		cinemaTemp.addCinemaFunction(new CinemaFunction(new Movie(movie, genero),date));
 		
 	}
+
+	@Override
+	public void updateCinemaByName(String name, Cinema cinema) throws CinemaPersistenceException {
+		if (!cinemas.containsKey(cinema)) throw new CinemaPersistenceException("El cinema " + cinema + " no existe");
+		Cinema c = cinemas.get(name);
+		c.setName(cinema.getName());
+		c.setSchedule(cinema.getFunctions());
+		
+	}
+
+	@Override
+	public void updateCinemaByNameAndDate(String name, String date, Cinema cinema) throws CinemaPersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 }

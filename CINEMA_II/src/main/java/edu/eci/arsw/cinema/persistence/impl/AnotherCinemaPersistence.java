@@ -116,4 +116,19 @@ public class AnotherCinemaPersistence implements CinemaPersitence {
 		
 	}
 
+	@Override
+	public void updateCinemaByName(String name, Cinema cinema) throws CinemaPersistenceException{
+		if (!cinemas.containsKey(cinema)) throw new CinemaPersistenceException("El cinema " + cinema + " no existe");
+		Cinema c = cinemas.get(name);
+		c.setName(cinema.getName());
+		c.setSchedule(cinema.getFunctions());
+		
+	}
+
+	@Override
+	public void updateCinemaByNameAndDate(String name, String date, Cinema cinema) throws CinemaPersistenceException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
