@@ -149,10 +149,10 @@ public class InMemoryCinemaPersistence implements CinemaPersitence {
 
 	@Override
 	public void updateCinemaByName(String name, Cinema cinema) throws CinemaPersistenceException {
-		if (!cinemas.containsKey(cinema)) throw new CinemaPersistenceException("El cinema " + cinema + " no existe");
-		Cinema c = cinemas.get(name);
-		c.setName(cinema.getName());
-		c.setSchedule(cinema.getFunctions());
+		if (!cinemas.containsKey(name)) throw new CinemaPersistenceException("El cinema " + name + " no existe");
+		cinemas.remove(name);
+		cinemas.put(cinema.getName(), cinema);
+		
 		
 	}
 

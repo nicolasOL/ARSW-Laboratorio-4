@@ -111,7 +111,7 @@ public ResponseEntity<?> addCinemaFunction(@PathVariable String name, @RequestBo
 
 }
 
-@PutMapping("/{name}")
+@RequestMapping(value="/{name}", method = RequestMethod.PUT)	
 public ResponseEntity<?> updateCinemaByName(@PathVariable String name, @RequestBody Cinema cinema){
 	try {
 		cinemaServices.updateCinemaByName(name, cinema);
